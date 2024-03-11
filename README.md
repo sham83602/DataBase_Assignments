@@ -151,6 +151,46 @@ select c.cname, c.city from customers c, customers d
  where d.rating = c.rating
  having cname = 'hoffman';
 ```
+# answers
+``` 
+ KD3_SHAM_83602>select s.sname , s.city , sp.sname from salespeople s , salespeople sp
+    ->  where sp.city=s.city and s.snum< sp.snum;
++-------+--------+--------+
+| sname | city   | sname  |
++-------+--------+--------+
+| peel  | london | motika |
++-------+--------+--------+
+1 row in set (0.00 sec)
+
+KD3_SHAM_83602>
+KD3_SHAM_83602>select cname , city from customers
+    -> where rating = (
+    -> select rating from customers where
+    -> cname = 'hoffman'
+    -> );
++---------+--------+
+| cname   | city   |
++---------+--------+
+| hoffman | london |
+| clemens | london |
+| pereira | rome   |
++---------+--------+
+3 rows in set (0.00 sec)
+
+KD3_SHAM_83602>select c.cname, c.city from customers c, customers d
+    ->  where d.rating = c.rating
+    ->  having cname = 'hoffman';
++---------+--------+
+| cname   | city   |
++---------+--------+
+| hoffman | london |
+| hoffman | london |
+| hoffman | london |
++---------+--------+
+3 rows in set (0.00 sec)
+
+KD3_SHAM_83602>
+```
 
 # Assignments 11
 
@@ -170,7 +210,9 @@ WHERE c.cnum IN (
         FROM orders
     )
 );
-
+ ```
+ # Answers
+ ```
 select total from (select snum , sum(amt) as total from orders group by snum) as totals
 where total > (select max(amt) from orders);
 KD3_SHAM_83602>select * from orders
@@ -213,16 +255,4 @@ KD3_SHAM_83602>select total from (select snum , sum(amt) as total from orders gr
 | 15382.07 |
 +----------+
 1 row in set (0.00 sec)
-
-KD3_SHAM_83602>
-
-
-
-select o.snum,sum(amt*comm) total from salespeople s ,orders o
-where s.snum=o.snum
-group by o.snum
-having total >(
-select max(amt) from orders
-);
-
 ```
